@@ -46,3 +46,6 @@ services:
 
 volumes:
   db-data:
+    driver_opts:
+      type: local
+      device: /db-data
