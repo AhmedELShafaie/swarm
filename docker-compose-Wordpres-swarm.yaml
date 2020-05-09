@@ -43,9 +43,10 @@ services:
       - dbserver
     ports:
       - 8080:80
-
+#We have to use o: 'bind' https://stackoverflow.com/questions/36387032/how-to-set-a-path-on-host-for-a-named-volume-in-docker-compose-yml
 volumes:
   db-data:
+    driver: local
     driver_opts:
-      type: local
       device: /db-data
+      o: "bind"
