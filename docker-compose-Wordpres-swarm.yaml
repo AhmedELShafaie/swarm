@@ -1,12 +1,14 @@
 version: "3.7"
 services:
   webserver:
-  image: nginx:latest
-  deploy:
-    replicas: 3
-    placement:
-      constraints:
-        - "node.hostname!=manager2"
+    image: nginx:latest
+    deploy:
+      replicas: 3
+      placement:
+        constraints:
+          - "node.hostname!=manager2"
+    ports:
+      - 80:80
 
   dbserver:
     image: mysql:8.0.20
