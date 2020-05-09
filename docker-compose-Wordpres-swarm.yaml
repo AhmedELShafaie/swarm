@@ -41,6 +41,8 @@ services:
       WORDPRESS_DB_NAME: wordpress
     depends_on:
       - dbserver
+    ports:
+      - 8080:80
 
 volumes:
   db-data:
