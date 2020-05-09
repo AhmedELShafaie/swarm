@@ -48,5 +48,6 @@ volumes:
   db-data:
     driver: local
     driver_opts:
+       o: "bind"
       device: /db-data
-      o: "bind"
+
