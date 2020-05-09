@@ -37,7 +37,7 @@ services:
     environment:
       WORDPRESS_DB_HOST: dbserver
       WORDPRESS_DB_USER: wordpress-admin
-      WORDPRES_DB_PASSWORD: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
     depends_on:
       - dbserver
