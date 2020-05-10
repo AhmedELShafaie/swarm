@@ -1,0 +1,53 @@
+version: "3.7"
+services:
+  webserver:
+    image: nginx:latest
+    deploy:
+      replicas: 3
+      placement:
+        constraints:
+          - "node.hostname!=manager2"
+    ports:
+      - 80:80
+
+  dbserver:
+    image: mysql:8.0.20
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress-admin
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - type: volume
+        source: db-data
+        target: /var/lib/mysql
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.hostname==manager2"
+
+  app:
+    image: wordpress:5.4.1-php7.4-apache
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.hostname==worker2"
+    environment:
+      WORDPRESS_DB_HOST: dbserver
+      WORDPRESS_DB_USER: wordpress-admin
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - dbserver
+    ports:
+      - 8080:80
+#We have to use o: 'bind' https://stackoverflow.com/questions/36387032/how-to-set-a-path-on-host-for-a-named-volume-in-docker-compose-yml
+volumes:
+  db-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: "bind"
+      device: /db-data
